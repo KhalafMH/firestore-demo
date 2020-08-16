@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Firestore Demo</title>
+</head>
+<body>
+
+<button onclick="create()">Create</button>
+<button onclick="read()">Read</button>
+<button onclick="update()">Update</button>
+<button onclick="deleteDocument()">Delete</button>
+
+<h2 id="name">Unknown</h2>
+
+<script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-storage.js"></script>
+<script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyB9h1WDTHOeb5NK1b_932ENotLc4d4Rb7g",
+        authDomain: "fir-20200816.firebaseapp.com",
+        databaseURL: "https://fir-20200816.firebaseio.com",
+        projectId: "fir-20200816",
+        storageBucket: "fir-20200816.appspot.com",
+        messagingSenderId: "35687386866",
+        appId: "1:35687386866:web:ca278ce268d74c2cb98a6b"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+</script>
+<script>
+    const db = firebase.firestore();
+
+    function create() {
+        const user = {
+            'name': 'Hussain',
+            'email': 'hs@example.com'
+        }
+        db.collection('users').add(user)
+            .then(value => console.log(`document created ${value}`));
+        db.collection('users').doc('mahdi').set({'name': 'Mahdi'});
+    }
+
+    function read() {
+        db.collection('users').doc('XlVXTOb0Gj65GCRI8r0x').get()
+            .then(function (value) {
+                console.log(`document retrieved ${value.get('name')}`)
+            })
+    }
+
+    function update() {
+        db.collection('users').doc('6bLdhFjeTF7AVJCgh2DZ').update({'name': 'Hussain'})
+            .then(value => console.log(`document updated ${value}`));
+    }
+
+    function deleteDocument() {
+        db.doc('users/XlVXTOb0Gj65GCRI8r0x').delete()
+            .then(console.log(`document deleted`));
+    }
+
+    db.doc('users/6bLdhFjeTF7AVJCgh2DZ').onSnapshot(function (snapshot) {
+        document.getElementById('name').textContent = snapshot.data();
+    });
+</script>
+</body>
+</html>
